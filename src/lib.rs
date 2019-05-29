@@ -1,5 +1,33 @@
-pub fn selle(i: &[Vec<u64>]) -> Vec<(usize, usize)> {
-    vec![]
+use std::u64;
+
+pub fn selle(input: &[Vec<u64>]) -> Vec<(usize, usize)> {
+     let mut res: Vec<(usize, usize)> = Vec::new();
+     for i in 0..input.len() {
+         let mut value = u64::MIN;
+         let mut candidates: Vec<(usize, usize)> = Vec::new();
+         for j in 0 ..input[i].len() {
+             if input[i][j] > value {
+                 if candidates.len() > 0 {
+                     candidates.clear();
+                 }
+                 candidates.push((i, j));
+                 value = input[i][j];
+             }
+             else if input[i][j] == value {
+                 candidates.push((i, j));
+             }
+         }
+         'outer: for c in 0..candidates.len() {
+             for ii in 0..input.len() {
+                 if ii != candidates[c].0 && input[ii][candidates[c].1] < value {
+                     continue 'outer;
+                 }
+             }
+             println!("{:?}", candidates[c]);
+             res.push(candidates[c]);
+         }
+     }
+     res
 }
 
 
